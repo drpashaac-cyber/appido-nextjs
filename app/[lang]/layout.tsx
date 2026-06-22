@@ -15,9 +15,9 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { lang: Locale };
+  params: Promise<{ lang: Locale }>;
 }): Promise<Metadata> {
-  const { lang } = params;
+  const { lang } = await params;
   const dict = await getDictionary(lang);
 
   const title = `Appido — ${dict.hero.eyebrow}`;
@@ -57,9 +57,9 @@ export default async function RootLayout({
   params,
 }: {
   children: ReactNode;
-  params: { lang: Locale };
+  params: Promise<{ lang: Locale }>;
 }) {
-  const { lang } = params;
+  const { lang } = await params;
   const dir = getDirection(lang);
 
   return (
