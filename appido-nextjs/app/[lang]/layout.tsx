@@ -6,8 +6,7 @@ import { SupportWidget } from "@/components/SupportWidget";
 import { getDictionary } from "@/lib/dictionaries";
 import { locales, defaultLocale, getDirection, type Locale } from "@/lib/i18n";
 
-// Change this to your production origin before deploying (used for canonical + hreflang URLs).
-const SITE_URL = "https://appido.io";
+const SITE_URL = "https://www.appido.io";
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -16,9 +15,9 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ lang: Locale }>;
+  params: { lang: Locale };
 }): Promise<Metadata> {
-  const { lang } = await params;
+  const { lang } = params;
   const dict = await getDictionary(lang);
 
   const title = `Appido — ${dict.hero.eyebrow}`;
@@ -58,9 +57,9 @@ export default async function RootLayout({
   params,
 }: {
   children: ReactNode;
-  params: Promise<{ lang: Locale }>;
+  params: { lang: Locale };
 }) {
-  const { lang } = await params;
+  const { lang } = params;
   const dir = getDirection(lang);
 
   return (
