@@ -3,7 +3,6 @@ import { locales, defaultLocale, type Locale } from "./lib/i18n";
 
 const LOCALE_SET = new Set<string>(locales);
 
-// Coarse country → locale map for first-visit geo detection (Vercel sets x-vercel-ip-country).
 const COUNTRY_LOCALE: Record<string, Locale> = {
   IR: "fa",
   RU: "ru",
@@ -18,17 +17,14 @@ const COUNTRY_LOCALE: Record<string, Locale> = {
 };
 
 function pickLocale(req: NextRequest): Locale {
-  // 1) Explicit choice (cookie) wins.
   const cookie = req.cookies.get("NEXT_LOCALE")?.value;
   if (cookie && LOCALE_SET.has(cookie)) return cookie as Locale;
 
-  // 2) Geo (only present behind Vercel / a proxy that sets the header).
   const country = req.headers.get("x-vercel-ip-country");
   if (country && COUNTRY_LOCALE[country.toUpperCase()]) {
     return COUNTRY_LOCALE[country.toUpperCase()];
   }
 
-  // 3) Accept-Language.
   const accept = req.headers.get("accept-language");
   if (accept) {
     const wanted = accept
@@ -38,7 +34,6 @@ function pickLocale(req: NextRequest): Locale {
     if (match) return match as Locale;
   }
 
-  // 4) Primary-market fallback.
   return defaultLocale;
 }
 
@@ -46,19 +41,14 @@ export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // ============================================================
-  // 1) مسیرهای ثابت (بدون ریدایرکت) - فقط ادامه بده
+  // ۱. ریدایرکت /os به /fa (صفحه اصلی)
   // ============================================================
-  // اگر مسیر دقیقاً برابر با این موارد است، بدون تغییر ادامه بده
-  if (
-    pathname === '/os' ||
-    pathname === '/os/dashboard' ||
-    pathname === '/os/owner'
-  ) {
-    return NextResponse.next();
+  if (pathname === '/os') {
+    return NextResponse.redirect(new URL('/fa', req.url));
   }
 
   // ============================================================
-  // 2) ریدایرکت‌های کوتاه به مسیرهای کامل (برای راحتی)
+  // ۲. ریدایرکت‌های کوتاه
   // ============================================================
   if (pathname === '/os/dash') {
     return NextResponse.redirect(new URL('/os/dashboard', req.url));
@@ -68,9 +58,18 @@ export function middleware(req: NextRequest) {
   }
 
   // ============================================================
-  // 3) مدیریت زبان (مسیرهای چندزبانه)
+  // ۳. مسیرهای ثابت (فقط اجازه عبور)
   // ============================================================
-  // Already prefixed with a supported locale → continue.
+  if (
+    pathname === '/os/dashboard' ||
+    pathname === '/os/owner'
+  ) {
+    return NextResponse.next();
+  }
+
+  // ============================================================
+  // ۴. مدیریت زبان
+  // ============================================================
   const hasLocale = locales.some(
     (l) => pathname === `/${l}` || pathname.startsWith(`/${l}/`)
   );
@@ -81,12 +80,10 @@ export function middleware(req: NextRequest) {
   url.pathname = `/${locale}${pathname === "/" ? "" : pathname}`;
 
   const res = NextResponse.redirect(url);
-  // Persist the resolved locale so subsequent visits are stable.
   res.cookies.set("NEXT_LOCALE", locale, { path: "/", maxAge: 60 * 60 * 24 * 365 });
   return res;
 }
 
 export const config = {
-  // Skip API, Next internals, and any file with an extension.
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)"],
 };
