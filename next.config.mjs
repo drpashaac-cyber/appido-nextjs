@@ -2,32 +2,30 @@
 const nextConfig = {
   reactStrictMode: true,
 
-  async redirects() {
+  async rewrites() {
     return [
+      // ۱. صفحه اصلی: /os → /fa (بدون تغییر آدرس)
       {
         source: '/os',
         destination: '/fa',
-        permanent: true,
       },
+      // ۲. داشبورد: /os/dashboard → dash.appido.io (بدون تغییر آدرس)
       {
         source: '/os/dashboard',
         destination: 'https://dash.appido.io',
-        permanent: true,
       },
       {
         source: '/os/dashboard/:path*',
         destination: 'https://dash.appido.io/:path*',
-        permanent: true,
       },
+      // ۳. پنل مدیریت: /os/owner → owner.appido.io (بدون تغییر آدرس)
       {
         source: '/os/owner',
         destination: 'https://owner.appido.io',
-        permanent: true,
       },
       {
         source: '/os/owner/:path*',
         destination: 'https://owner.appido.io/:path*',
-        permanent: true,
       },
     ];
   },
