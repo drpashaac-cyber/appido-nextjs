@@ -45,10 +45,21 @@ function pickLocale(req: NextRequest): Locale {
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // ✅ ریدایرکت‌های جدید (قبل از هر چیز دیگر)
-  if (pathname === '/os') {
-    return NextResponse.redirect(new URL('/os/fa', req.url));
+  // ============================================================
+  // 1) مسیرهای ثابت (بدون ریدایرکت) - فقط ادامه بده
+  // ============================================================
+  // اگر مسیر دقیقاً برابر با این موارد است، بدون تغییر ادامه بده
+  if (
+    pathname === '/os' ||
+    pathname === '/os/dashboard' ||
+    pathname === '/os/owner'
+  ) {
+    return NextResponse.next();
   }
+
+  // ============================================================
+  // 2) ریدایرکت‌های کوتاه به مسیرهای کامل (برای راحتی)
+  // ============================================================
   if (pathname === '/os/dash') {
     return NextResponse.redirect(new URL('/os/dashboard', req.url));
   }
@@ -56,6 +67,9 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/os/owner', req.url));
   }
 
+  // ============================================================
+  // 3) مدیریت زبان (مسیرهای چندزبانه)
+  // ============================================================
   // Already prefixed with a supported locale → continue.
   const hasLocale = locales.some(
     (l) => pathname === `/${l}` || pathname.startsWith(`/${l}/`)
