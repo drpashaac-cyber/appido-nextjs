@@ -1,3 +1,4 @@
+```typescript
 import { NextRequest, NextResponse } from "next/server";
 import { locales, defaultLocale, type Locale } from "./lib/i18n";
 
@@ -41,14 +42,7 @@ export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // ============================================================
-  // ۱. ریدایرکت /os به /fa (صفحه اصلی)
-  // ============================================================
-  if (pathname === '/os') {
-    return NextResponse.redirect(new URL('/fa', req.url));
-  }
-
-  // ============================================================
-  // ۲. ریدایرکت‌های کوتاه
+  // ۱. ریدایرکت‌های کوتاه (فقط برای راحتی کاربر)
   // ============================================================
   if (pathname === '/os/dash') {
     return NextResponse.redirect(new URL('/os/dashboard', req.url));
@@ -58,17 +52,20 @@ export function middleware(req: NextRequest) {
   }
 
   // ============================================================
-  // ۳. مسیرهای ثابت (فقط اجازه عبور)
+  // ۲. مسیرهای /os را بدون تغییر عبور بده (Rewrite در Vercel انجام میشه)
   // ============================================================
   if (
+    pathname === '/os' ||
     pathname === '/os/dashboard' ||
-    pathname === '/os/owner'
+    pathname === '/os/owner' ||
+    pathname.startsWith('/os/dashboard/') ||
+    pathname.startsWith('/os/owner/')
   ) {
     return NextResponse.next();
   }
 
   // ============================================================
-  // ۴. مدیریت زبان
+  // ۳. مدیریت زبان (بقیه مسیرها)
   // ============================================================
   const hasLocale = locales.some(
     (l) => pathname === `/${l}` || pathname.startsWith(`/${l}/`)
@@ -87,3 +84,4 @@ export function middleware(req: NextRequest) {
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)"],
 };
+```
