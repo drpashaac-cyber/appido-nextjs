@@ -45,6 +45,17 @@ function pickLocale(req: NextRequest): Locale {
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
+  // ✅ ریدایرکت‌های جدید (قبل از هر چیز دیگر)
+  if (pathname === '/os') {
+    return NextResponse.redirect(new URL('/os/fa', req.url));
+  }
+  if (pathname === '/os/dash') {
+    return NextResponse.redirect(new URL('/os/dashboard', req.url));
+  }
+  if (pathname === '/owner') {
+    return NextResponse.redirect(new URL('/os/owner', req.url));
+  }
+
   // Already prefixed with a supported locale → continue.
   const hasLocale = locales.some(
     (l) => pathname === `/${l}` || pathname.startsWith(`/${l}/`)
