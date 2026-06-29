@@ -67,6 +67,18 @@ const en: Dictionary = {
     cta2: "Book a demo",
     note: "No credit card · GDPR-aligned · Cancel anytime",
   },
+  faq: {
+    eyebrow: "FAQ",
+    title: "Everything you need to know",
+    items: [
+      { q: "What is Appido?", a: "Appido is an AI-powered sales automation platform for Telegram that helps businesses automatically follow up, support and convert leads into paying customers." },
+      { q: "Do I need technical knowledge to use Appido?", a: "No. Appido is designed for business owners. Setup takes just a few minutes with no coding or technical skills required." },
+      { q: "Is there a free trial?", a: "Yes. You get 14 full days to try every feature of Appido — no credit card required, no commitment." },
+      { q: "Does Appido work with all Telegram bots?", a: "Yes. Appido works with Telegram bots, groups and channels. You can manage multiple channels simultaneously from one dashboard." },
+      { q: "What payment methods are supported?", a: "Appido supports global credit cards, local payment methods and cryptocurrencies (USDT TRC20 and BEP20)." },
+      { q: "Can I change my plan later?", a: "Yes. You can upgrade or change your plan at any time. Not satisfied? We offer a 30-day money-back guarantee on all paid plans." },
+    ],
+  },
   footer: {
     tagline: "AI Revenue Operating System for Telegram businesses.",
     cols: [

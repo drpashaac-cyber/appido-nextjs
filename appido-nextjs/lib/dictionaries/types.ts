@@ -38,6 +38,11 @@ export interface ValueStack {
   note: string;
 }
 
+export interface FaqItem {
+  q: string;
+  a: string;
+}
+
 export interface FooterCol {
   h: string;
   l: string[];
@@ -89,6 +94,11 @@ export interface Dictionary {
     cta1: string;
     cta2: string;
     note: string;
+  };
+  faq: {
+    eyebrow: string;
+    title: string;
+    items: FaqItem[];
   };
   footer: {
     tagline: string;

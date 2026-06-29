@@ -10,6 +10,7 @@ import { Proof } from "@/components/sections/Proof";
 import { Pricing } from "@/components/sections/Pricing";
 import { FinalCta } from "@/components/sections/FinalCta";
 import { Footer } from "@/components/sections/Footer";
+import { Faq } from "@/components/sections/Faq";
 
 export default async function Page({ params }: { params: Promise<{ lang: Locale }> }) {
   const { lang } = await params;
@@ -26,6 +27,7 @@ export default async function Page({ params }: { params: Promise<{ lang: Locale 
         <Logos dict={dict} />
         <Features dict={dict} />
         <Proof dict={dict} />
+        <Faq dict={dict} />
         <Pricing dict={dict} lang={lang} plans={plans} trialDays={trialDays} />
         <FinalCta dict={dict} />
       </main>

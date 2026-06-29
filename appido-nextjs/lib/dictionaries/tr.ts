@@ -67,6 +67,18 @@ const tr: Dictionary = {
     cta2: "Demo planla",
     note: "Kredi kartı yok · GDPR uyumlu · İstediğin zaman iptal",
   },
+  faq: {
+    eyebrow: "Sık Sorulan Sorular",
+    title: "Bilmek istediğin her şey",
+    items: [
+      { q: "Appido nedir?", a: "Appido, işletmelerin müşterileri otomatik olarak takip etmesine, desteklemesine ve satın almaya yönlendirmesine yardımcı olan Telegram için yapay zeka destekli bir satış otomasyon platformudur." },
+      { q: "Appido'yu kullanmak için teknik bilgiye ihtiyacım var mı?", a: "Hayır. Appido işletme sahipleri için tasarlanmıştır. Kurulum sadece birkaç dakika sürer, kodlama veya teknik beceri gerekmez." },
+      { q: "Ücretsiz deneme var mı?", a: "Evet. Appido'nun tüm özelliklerini 14 gün boyunca ücretsiz deneyebilirsiniz — kredi kartı ve taahhüt gerekmez." },
+      { q: "Appido tüm Telegram botlarıyla çalışır mı?", a: "Evet. Appido, Telegram botları, gruplar ve kanallarla çalışır. Birden fazla kanalı aynı anda tek panelden yönetebilirsiniz." },
+      { q: "Hangi ödeme yöntemleri destekleniyor?", a: "Appido küresel kredi kartlarını, yerel ödeme yöntemlerini ve kripto paraları (USDT TRC20 ve BEP20) destekler." },
+      { q: "Planımı daha sonra değiştirebilir miyim?", a: "Evet. İstediğin zaman planını yükseltebilir veya değiştirebilirsin. Memnun kalmadın mı? Tüm ücretli planlarda 30 günlük para iade garantisi sunuyoruz." },
+    ],
+  },
   footer: {
     tagline: "Telegram işletmeleri için Yapay Zeka Gelir İşletim Sistemi.",
     cols: [
