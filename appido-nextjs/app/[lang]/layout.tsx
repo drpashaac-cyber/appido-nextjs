@@ -61,6 +61,22 @@ export default async function RootLayout({
 }) {
   const { lang } = params;
   const dir = getDirection(lang);
+  const dict = await getDictionary(lang);
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Appido",
+    url: SITE_URL,
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    description: dict.hero.sub,
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+  };
 
   return (
     <html lang={lang} dir={dir} data-theme="light" suppressHydrationWarning>
@@ -73,8 +89,15 @@ export default async function RootLayout({
           rel="stylesheet"
         />
         <ThemeScript />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
       </head>
-      <body>{children}<SupportWidget /></body>
+      <body>
+        {children}
+        <SupportWidget />
+      </body>
     </html>
   );
 }
