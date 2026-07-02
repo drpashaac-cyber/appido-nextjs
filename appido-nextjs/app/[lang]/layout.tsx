@@ -8,6 +8,10 @@ import { locales, defaultLocale, getDirection, type Locale } from "@/lib/i18n";
 
 const SITE_URL = "https://www.appido.io";
 
+function resolveLocale(value: string): Locale {
+  return locales.includes(value as Locale) ? (value as Locale) : defaultLocale;
+}
+
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
 }
@@ -15,9 +19,10 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { lang: Locale };
+  params: Promise<{ lang: string }>;
 }): Promise<Metadata> {
-  const { lang } = params;
+  const { lang: rawLang } = await params;
+  const lang = resolveLocale(rawLang);
   const dict = await getDictionary(lang);
 
   const title = `Appido — ${dict.hero.eyebrow}`;
@@ -57,9 +62,10 @@ export default async function RootLayout({
   params,
 }: {
   children: ReactNode;
-  params: { lang: Locale };
+  params: Promise<{ lang: string }>;
 }) {
-  const { lang } = params;
+  const { lang: rawLang } = await params;
+  const lang = resolveLocale(rawLang);
   const dir = getDirection(lang);
   const dict = await getDictionary(lang);
 
@@ -104,6 +110,17 @@ export default async function RootLayout({
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', 'G-G2KG7E2BWV');
+            `,
+          }}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+              })(window,document,"clarity","script","xem3xsuhks");
             `,
           }}
         />
